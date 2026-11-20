@@ -10,7 +10,7 @@ from features.come_here.feature import ComeHereFeature
 from features.reminder.feature import ReminderFeature
 from features.robot_called.feature import RobotCalledFeature
 from features.stop.feature import StopFeature
-from kernel.understanding.feature_context import FeatureContext
+from kernel.inputs.whisper.feature_context import FeatureContext
 
 from .classifier import IntentClassifier
 from .handler import UnderstandingHandler

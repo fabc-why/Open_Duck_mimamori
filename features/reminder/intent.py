@@ -1,6 +1,6 @@
 """CREATE_REMINDER intent definition."""
 
-from kernel.understanding.models import IntentDefinition
+from kernel.inputs.whisper.models import IntentDefinition
 
 from .datetime_parser import parse_reminder
 

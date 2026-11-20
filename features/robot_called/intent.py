@@ -1,6 +1,6 @@
 """ROBOT_CALLED intent definition."""
 
-from kernel.understanding.models import IntentDefinition
+from kernel.inputs.whisper.models import IntentDefinition
 
 
 ROBOT_CALLED = IntentDefinition(

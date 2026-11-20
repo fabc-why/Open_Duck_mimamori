@@ -17,20 +17,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from audio_input import RawAudioSubscriber
-from features.come_here.feature import ComeHereFeature
-from features.conversation.feature import ConversationFeature
-from features.reminder.feature import ReminderFeature
-from features.robot_called.feature import RobotCalledFeature
 from features.robot_commands import RobotCommandPublisher
-from features.stop.feature import StopFeature
 from kernel.event_router import EventRouter
-from kernel.inputs.transcription_subscriber import TranscriptionSubscriber
-from kernel.understanding.feature_context import FeatureContext
-from kernel.understanding.handler import UnderstandingHandler
-from kernel.understanding.registry import IntentRegistry
+from kernel.inputs.input import InputManager
 
 
+#らくするために無理くり入れた機能なので、本番では使わないでください。
+#operatoｒの方の実行は、本来はここと独立してやつ感じなので
 ROS_HOST: Final = "localhost"
 ROS_PORT: Final = 9090
 OPERATOR_PYTHON: Final = "/home/openduck/openduck_function/operator/.venv/bin/python"
@@ -62,7 +55,6 @@ class Mimamori:
         self.operator_output_thread.start()
 
         self.event_router = EventRouter()
-        self.intent_registry = IntentRegistry()
         self.command_publishers: list[RobotCommandPublisher] = []
 
         def create_command_publisher(topic: str) -> RobotCommandPublisher:
@@ -70,35 +62,10 @@ class Mimamori:
             self.command_publishers.append(publisher)
             return publisher
 
-        self.audio_input = RawAudioSubscriber(client=self.client)
-        self.transcription_input = TranscriptionSubscriber(
+        self.inputs = InputManager(
             client=self.client,
             event_router=self.event_router,
-        )
-
-        context = FeatureContext(
-            intent_registry=self.intent_registry,
-            event_router=self.event_router,
             command_publisher_factory=create_command_publisher,
-        )
-        self.features = (
-            StopFeature(),
-            RobotCalledFeature(),
-            ComeHereFeature(),
-            ReminderFeature(),
-            ConversationFeature(),
-        )
-        for feature in self.features:
-            feature.register(context)
-
-        self.understanding_handler = UnderstandingHandler(
-            event_router=self.event_router,
-            registry=self.intent_registry,
-        )
-        self.event_router.subscribe(
-            pattern="speech.utterance.recognized",
-            handler=self.understanding_handler.handle,
-            name="speech_understanding",
         )
 
     async def _run(self) -> None:
@@ -115,8 +82,7 @@ class Mimamori:
                 await asyncio.sleep(0.1)
         finally:
             self.running = False
-            self.transcription_input.cleanup()
-            self.audio_input.cleanup()
+            self.inputs.cleanup()
             for publisher in self.command_publishers:
                 publisher.cleanup()
             await self.event_router.stop(drain=True)

@@ -1,6 +1,6 @@
 """STOP intent definition."""
 
-from kernel.understanding.models import IntentDefinition
+from kernel.inputs.whisper.models import IntentDefinition
 
 
 STOP = IntentDefinition(

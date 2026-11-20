@@ -1,5 +1,16 @@
 # OpenDuck
 
+## 概要
+
+OpenDuckは、次のような情報を処理し、必要に応じて別プロセスへ指示を送る司令塔です。
+
+- 文字起こしされたマイク入力
+- 時間やスケジュールに関する情報
+- その他のセンサー情報s
+
+現時点では、OpenDuckのカメラ画像から解析された情報は受信していません。
+将来的には対応しようかなとも思ってます。
+
 ## 起動
 
 ROS bridgeが`localhost:9090`で起動している状態で、リポジトリルートから実行します。
@@ -40,7 +51,7 @@ Feature Handler
   ↓
 /openduck/operation/actions
   ↓
-operatorプロセス(別repo)
+operatorプロセス
 ```
 
 COME_HEREとSTOPは、ロボットを直接操作せず、`std_msgs/String`のJSONとして別プロセスへ送信します。
@@ -53,7 +64,14 @@ COME_HEREとSTOPは、ロボットを直接操作せず、`std_msgs/String`のJS
 {"command": "stop"}
 ```
 
-operatorプロセスの標準出力は、main.pyによって`[operation]`接頭辞付きで表示されます。
+## operatorプロセス
+
+operatorプロセスは、OpenDuckの行動に関する処理を担当します。
+
+実装は[Open_Duck_mimamori_Operator](https://github.com/fabc-why/Open_Duck_mimamori_Operator)で管理しています。
+
+`main.py`を起動するとoperatorプロセスも自動的に起動します。
+operatorの標準出力には`[operation]`という接頭辞が付きます。
 
 ```text
 [operation] Subscribed to /openduck/operation/actions

@@ -1,0 +1,1 @@
+"""OpenDuck application modules."""

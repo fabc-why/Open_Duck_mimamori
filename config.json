@@ -1,0 +1,10 @@
+{
+    "audio":{
+        "topic":"/openduck/audio/raw",
+        "type":"std_msgs/UInt8MultiArray"
+    },
+    "speech":{
+        "topic":"/openduck/whisper_heard",
+        "type":"std_msgs/String"
+    }
+}

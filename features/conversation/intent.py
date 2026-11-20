@@ -1,6 +1,6 @@
 """CONVERSATION fallback intent definition."""
 
-from kernel.inputs.whisper.models import IntentDefinition
+from inputs.whisper.models import IntentDefinition
 
 
 CONVERSATION = IntentDefinition(

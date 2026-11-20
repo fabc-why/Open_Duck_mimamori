@@ -19,7 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from features.robot_commands import RobotCommandPublisher
 from kernel.event_router import EventRouter
-from kernel.inputs.input import InputManager
+from inputs.input import InputManager
 
 
 #らくするために無理くり入れた機能なので、本番では使わないでください。

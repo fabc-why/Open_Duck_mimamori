@@ -1,6 +1,6 @@
 """COME_HERE intent definition."""
 
-from kernel.inputs.whisper.models import IntentDefinition, SlotDefinition
+from inputs.whisper.models import IntentDefinition, SlotDefinition
 
 
 COME_HERE = IntentDefinition(
